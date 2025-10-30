@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: water-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: water-db
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - water-network
+
+  nestjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: water-nestjs-app
+    restart: always
+    ports:
+      - "3005:3005"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/water-db
+      - PORT=3005
+    depends_on:
+      - mongodb
+    networks:
+      - water-network
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+
+networks:
+  water-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:

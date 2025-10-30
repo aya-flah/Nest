@@ -8,7 +8,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 @Module({
   imports: [
     // FIXED: More explicit connection configuration
-    MongooseModule.forRoot('mongodb://localhost:27017/melon', {
+    MongooseModule.forRoot('mongodb://localhost:27017/water-db', {
       // Add these options for better connection handling
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
